@@ -2,10 +2,16 @@ const express = require('express');
 const cors = require('cors')
 const helmet = require('helmet');
 const xss = require('xss-clean');
+const path = require('path')
 
 const PORT = process.env.PORT || 3000
 
 const app = express();
+
+// Set EJS as the view engine
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'ejs');
+
 app.use(cors());
 app.use(helmet());
 app.use(xss());
@@ -20,12 +26,16 @@ const generateId = () => {
   return randomId.slice(2, 11);
 };
 
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Health check endpoint
-app.get('healthcheck', (_, res) => {
+app.get('/healthcheck', (_, res) => {
   res.send('Server is up and running');
 });
 
+app.get('/template', (req, res)=>{
+    res.render('index');
+})
 
 // GET all users
 app.get('/users/all', (_, res) => {
@@ -41,6 +51,10 @@ app.get('/users/:id', (req, res) => {
   } else {
     res.status(404).send('User not found');
   }
+});
+
+app.post('profile', (req, res) => {
+    res.render('profile');
 });
 
 // POST request
@@ -119,8 +133,8 @@ app.patch('/users/:id', (req, res) => {
 });
 
 // Fallback route
-app.use((_, res) => {
-  res.status(404).send('Route not found');
+app.use((req, res) => {
+  res.status(404).send(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
 });
 
 app.listen(PORT, () => {
