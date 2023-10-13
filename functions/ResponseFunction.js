@@ -1,8 +1,9 @@
 function ResponseFunction(input){
+    this.input = input
     return {
-        ...input,
+        ...this.input,
         ms: new Date(),
     }
 }
 
-module.exports = ResponseFunction;
+module.exports = new ResponseFunction();

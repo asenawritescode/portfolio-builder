@@ -1,6 +1,7 @@
 const
     express = require("express"),
-    account_router = express.Router()
+    account_router = express.Router(),
+    ResponseFunction = require("../functions/ResponseFunction")
     ;
 
 account_router
@@ -46,8 +47,14 @@ account_router
          */
 
         if (!req.body) return res.status(404)
-            .json({
-            })
+            .json(
+        ResponseFunction({
+             message : `Required details not passed`
+        }))
+
+
+        // parse the parsed data
+        
     })
 
 // 

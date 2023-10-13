@@ -7,6 +7,9 @@ port = process.env.PORT || 5700
 ;
 
 
+// connect to the database
+require("./functions/connectDb")
+
 app
 // configs
 .use(express.json())
@@ -14,21 +17,8 @@ app
 .use(require("helmet")())
 // make files accesible
 .use(express.static(path.join(`${__dirname}/views/`)))
-// .use(express.static(path.join(`${__dirname}/views/`)))
-// .use(express.static(path.join(`${__dirname}/views/css/`)))
-// .use(express.static(path.join(`${__dirname}/views/fonts/`)))
-// .use(express.static(path.join(`${__dirname}/views/img/`)))
-// .use(express.static(path.join(`${__dirname}/views/js/`)))
-// .use(express.static(path.join(`${__dirname}/views/scss/`)))
-// .use(express.static(path.join(`${__dirname}/views/vendors/`)))
-// .use(express.static(path.join(`${__dirname}/views/MeetMe-doc/`)))
-// .use(express.static(path.join(`${__dirname}/views/MeetMe-doc/css/`)))
-// .use(express.static(path.join(`${__dirname}/views/MeetMe-doc/fonts/`)))
-// .use(express.static(path.join(`${__dirname}/views/MeetMe-doc/img/`)))
-// .use(express.static(path.join(`${__dirname}/views/MeetMe-doc/js/`)))
-// .use(express.static(path.join(`${__dirname}/views/MeetMe-doc/syntax-highlighter/`)))
-// .use(express.static(path.join(`${__dirname}/views/MeetMe-doc/syntax-highlighter/scripts/`)))
-// .use(express.static(path.join(`${__dirname}/views/MeetMe-doc/syntax-highlighter/styles/`)))
+
+
 
 // view engine
 .set('view engine' , 'ejs')
