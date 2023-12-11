@@ -1,15 +1,13 @@
 {
-  "name": "porfolio-builder",
+  "name": "porfolio-builde",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
+  "license": "MIT",
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon riri.js"
   },
   "type": "commonjs",
   "dependencies": {
-    "cors": "^2.8.5",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
     "helmet": "^7.0.0",
