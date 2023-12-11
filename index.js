@@ -34,6 +34,7 @@ app.get('/healthcheck', (_, res) => {
 });
 
 app.get('/template', (req, res)=>{
+  // TODO : render the template based on file name 
     res.render('index');
 })
 
@@ -134,7 +135,8 @@ app.patch('/users/:id', (req, res) => {
 
 // Fallback route
 app.use((req, res) => {
-  res.status(404).send(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
+  // res.status(404).send(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
+  res.status(404).send(`${req.method} ${req.originalUrl} not found`);
 });
 
 app.listen(PORT, () => {
