@@ -14,3 +14,7 @@ const templateSchema = new mongoose.Schema({
         default: Date.now
     }
 })
+
+const Template = mongoose.model('Template', templateSchema);
+
+module.exports = Template;
