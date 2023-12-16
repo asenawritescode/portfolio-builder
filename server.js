@@ -30,8 +30,16 @@ app
 
     // mids
     .get('/', function (req, res) {
-        // restrict access points , generate and ssl and pin
-        return res.render('index');
+        // load all templates avaulable in db and render them
+        const templates = Template.find();
+        
+        if (!templates) {
+            return res.status(404).send('User not found');
+        }
+
+        
+
+        return res.render('index', { data: templates });
     })
 
     //  user-profile
