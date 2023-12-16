@@ -109,6 +109,17 @@ const userSchema = new mongoose.Schema({
     },
     templateId: {
         type: String
+    },
+    role: {
+        type: String
+    },
+    timestamp: {
+        type: Date,
+        default: Date.now
+    },
+    updatedOn: {
+        type: Date,
+        default: []
     }
 });
 
