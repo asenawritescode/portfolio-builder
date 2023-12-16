@@ -75,7 +75,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    username: {
+    userName: {
         type: String,
         required: true
     },
@@ -115,11 +115,13 @@ const userSchema = new mongoose.Schema({
     },
     timestamp: {
         type: Date,
+        required: true,
         default: Date.now
     },
     updatedOn: {
         type: Date,
-        default: []
+        required: true,
+        default: Date.now
     }
 });
 
