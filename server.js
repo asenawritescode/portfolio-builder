@@ -4,9 +4,11 @@ const
     express = require("express"),
     app = express(),
     path = require("path"),
+    helmet = require("helmet"),
     // ejs = require("ejs"),
     port = process.env.PORT || 5700,
-    User = require("./models/user.model")
+    User = require("./models/user.model"),
+    Template = require("./models/template.model")
     ;
 
 
@@ -17,29 +19,36 @@ app
     // configs
     .use(express.json())
     .use(express.urlencoded())
-    .use(require("helmet")())
+    .use(
+        helmet.contentSecurityPolicy({
+            directives: {
+                scriptSrc: ["'self'", "https://unpkg.com"],
+            },
+        })
+    )
+
     // make files accesible
-    .use(express.static(path.join(`${__dirname}/views/`)))
+    .use(express.static(path.join(`${__dirname}/views/demo1`)))
     .use(express.static(path.join(__dirname, 'node_modules')))
     .use(express.static(path.join(__dirname, 'public')))
 
     // view engine
     .set('view engine', 'ejs')
-    .set('views', `${__dirname}/views`)
+    .set('views', `${__dirname}/views/`)
 
 
     // mids
     .get('/', function (req, res) {
         // load all templates avaulable in db and render them
         const templates = Template.find();
-        
+
         if (!templates) {
             return res.status(404).send('User not found');
         }
 
-        
 
-        return res.render('index', { data: templates });
+
+        return res.render('demo1/demo', { data: templates });
     })
 
     //  user-profile
@@ -62,15 +71,14 @@ app
         return res.render(`${userData.templateId}/user`, { data: userData });
     })
 
-
     // form
     .get('/register', function (req, res) {
-        return res.render('form', { dat: 'Dat' })
+        return res.render('demo1/index', { data: null })
     })
 
     // register
     .post('/register', function (req, res) {
-        
+
         // get the data from the fom 
         const {
             firstName,
@@ -105,7 +113,7 @@ app
                 skills,
                 templateId
             })
-        }catch (err) {
+        } catch (err) {
             console.log(err);
             return res.status(500).send(`Error : ${err}`);
         }
@@ -145,20 +153,11 @@ app
                     templateId
                 }
             )
-        }catch{
+        } catch {
             console.log(err);
             return res.status(500).send(`Error : ${err}`);
         }
     })
-
-    // get qr code
-    .get('/qr/:id', function (req, res) {
-        return res.send(req.params.id)
-    })
-
-    // .get('/hc' , function(_ , res){
-    //     return res.send(`Hi`)
-    // })
 
     .get('/:fileName.html', function (req, res, next) {
         /**
@@ -195,7 +194,6 @@ app
             console.log(`lorem ipsum`)
         }
     })
-
     .get('/:fileName/:id.html', function (req, res, next) {
         // send back file with id , get data and loop and pass it through to the ejs file and loop , data to be fetched from db
         /**
@@ -226,6 +224,7 @@ app
             console.log(`lorem ipsum`)
         }
     })
+
     // 404 error
     .use(function (req, res) {
         return res.status(404)
