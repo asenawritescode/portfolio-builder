@@ -32,6 +32,7 @@ var form_5_progessbar = document.querySelector(".form_5_progessbar");
 var form_6_progessbar = document.querySelector(".form_6_progessbar");
 
 var btn_done = document.querySelector(".btn_done");
+var btn_add_work = document.querySelector(".add-wrk-btn");
 var modal_wrapper = document.querySelector(".modal_wrapper");
 var shadow = document.querySelector(".shadow");
 
@@ -138,6 +139,20 @@ form_6_back_btn.addEventListener("click", function(){
 btn_done.addEventListener("click", function(){
 	modal_wrapper.classList.add("active");
 })
+
+var wrk_expr_count = 1;
+
+document.querySelector('.add-wrk-btn').addEventListener("click", function(){
+	console.log("clicked");
+	var originalWorkExperience = document.querySelector('.repeat_this');
+	console.log(originalWorkExperience)
+	var clonedWorkExperience = originalWorkExperience.cloneNode(true);
+	clonedWorkExperience.setAttribute('class', 'repeat_this' + wrk_expr_count);
+	wrk_expr_count++;
+
+	var workExperienceContainer = document.querySelector('.repeat_this');
+	workExperienceContainer.insertAdjacentElement('beforebegin', clonedWorkExperience);
+});
 
 shadow.addEventListener("click", function(){
 	modal_wrapper.classList.remove("active");
