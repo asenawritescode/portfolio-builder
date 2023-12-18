@@ -19,13 +19,13 @@ app
     // configs
     .use(express.json())
     .use(express.urlencoded())
-    .use(
-        helmet.contentSecurityPolicy({
-            directives: {
-                scriptSrc: ["'self'", "https://unpkg.com"],
-            },
-        })
-    )
+    // .use(
+    //     helmet.contentSecurityPolicy({
+    //         directives: {
+    //             scriptSrc: ["'self'", "https://unpkg.com"],
+    //         },
+    //     })
+    // )
 
     // make files accesible
     .use(express.static(path.join(`${__dirname}/views/demo1`)))
