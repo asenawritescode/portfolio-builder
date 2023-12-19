@@ -191,7 +191,7 @@
             background: var(--back-btn-hover);
         }
 
-        .add-wrk-btn {
+        .add-wrk-btn, .add-sch-btn {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -207,11 +207,11 @@
             border: none;
         }
 
-        .add-wrk-btn:hover {
+        .add-wrk-btn:hover, .add-sch-btn:hover {
             background: var(--next-btn-hover);
         }
 
-        .add-wrk-btn span {
+        .add-wrk-btn span, .add-sch-btn span {
             margin-right: 5px;
             /* Adjusted margin */
         }
@@ -364,7 +364,11 @@
                             <input type="text" name="First Name" class="input" id="first_name">
                         </div>
                         <div class="input_wrap">
-                            <label for="last_name">Social Links (STILL NEEDS ABSTRACTION)</label>
+                            <label for="last_name">Twitter Link </label>
+                            <input type="text" name="Last Name" class="input" id="last_name">
+                            <label for="last_name">Linkedin Link </label>
+                            <input type="text" name="Last Name" class="input" id="last_name">
+                            <label for="last_name">Github Link </label>
                             <input type="text" name="Last Name" class="input" id="last_name">
                         </div>
                     </div>
@@ -421,8 +425,32 @@
                 <form>
                     <div class="form_container">
                         <div class="input_wrap">
-                            <label for="last_name">Education (STILL NEEDS ABSTRACTION)</label>
-                            <input type="text" name="Last Name" class="input" id="last_name">
+                            <div class="work_experience scrollable">
+                                <div class="repeat_this">
+                                    <label for="degree">Degree*</label>
+                                    <input type="text" id="degree" name="degree" class="input" required>
+
+                                    <label for="institution">Institution*</label>
+                                    <input type="text" id="institution" name="institution" class="input" required>
+
+                                    <label for="startDate">Start Date*</label>
+                                    <input type="date" id="startDate" name="startDate" class="input" required>
+
+                                    <label for="endDate">End Date (Leave blank if still studying)</label>
+                                    <input type="date" id="endDate" name="endDate" class="input">
+
+                                    <label for="description">Description</label>
+                                    <textarea id="description" name="description" class="input"></textarea>
+
+                                    <br>
+                                    <!-- Find an alternative to this for separation of work experience -->
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="common_btns" style="padding-top: 10px;">
+                                <button type="button" class="add-sch-btn">Add Education <span class="icon"><ion-icon
+                                            name="add-outline"></ion-icon></span></button>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -432,7 +460,7 @@
                 <form>
                     <div class="form_container">
                         <div class="input_wrap">
-                            <label for="last_name">Skills (STILL NEEDS ABSTRACTION)</label>
+                            <label for="last_name">Skills</label>
                             <input type="text" name="Last Name" class="input" id="last_name">
                         </div>
                     </div>
