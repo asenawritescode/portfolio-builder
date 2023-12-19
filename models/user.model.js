@@ -1,17 +1,28 @@
 const mongoose = require('mongoose');
 
+const socialMediaSchema = new mongoose.Schema({
+    platform: {
+        type: String,
+        required: [true, 'Platform is required']
+    },
+    link: {
+        type: String,
+        required: [true, 'Link is required']
+    }
+});
+
 const workExperienceSchema = new mongoose.Schema({
     roleName: {
         type: String,
-        required: true
+        required: [true, 'Role name is required']
     },
     company: {
         type: String,
-        required: true
+        required: [true, 'Company name is required']
     },
     startDate: {
         type: Date,
-        required: true
+        required: [true, 'Start date is required']
     },
     endDate: {
         type: Date
@@ -25,19 +36,18 @@ const workExperienceSchema = new mongoose.Schema({
     }
 });
 
-
 const educationSchema = new mongoose.Schema({
     degree: {
         type: String,
-        required: true
+        required: [true, 'Degree is required']
     },
     institution: {
         type: String,
-        required: true
+        required: [true, 'Institution is required']
     },
     startDate: {
         type: Date,
-        required: true
+        required: [true, 'Start date is required']
     },
     endDate: {
         type: Date
@@ -51,45 +61,33 @@ const educationSchema = new mongoose.Schema({
     }
 });
 
-const socialMediaSchema = new mongoose.Schema({
-    platform: {
-        type: String,
-        required: true
-    },
-    link: {
-        type: String,
-        required: true
-    }
-});
-
 const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
-        required: true
+        required: [true, 'First name is required']
     },
     middleName: {
-        type: String,
-        required: false
+        type: String
     },
     lastName: {
         type: String,
-        required: true
+        required: [true, 'Last name is required']
     },
     userName: {
         type: String,
-        required: true
+        required: [true, 'Username is required']
     },
     email: {
         type: String,
-        required: true
+        required: [true, 'Email is required']
     },
     phone: {
         type: String,
-        required: true
+        required: [true, 'Phone number is required']
     },
     address: {
         type: String,
-        required: true
+        required: [true, 'Address is required']
     },
     socialLinks: {
         type: [socialMediaSchema],
@@ -115,12 +113,12 @@ const userSchema = new mongoose.Schema({
     },
     timestamp: {
         type: Date,
-        required: true,
+        required: [true, 'Timestamp is required'],
         default: Date.now
     },
     updatedOn: {
         type: Date,
-        required: true,
+        required: [true, 'Updated on is required'],
         default: Date.now
     }
 });
