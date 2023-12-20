@@ -52,7 +52,6 @@ form_1_next_btn.addEventListener("click", async function () {
 	// get data from form
 	// const formData = new FormData(form);
 
-
 	// // send data to server
 	// try {
 	// 	const response = await fetch("http://localhost:5700/registerTest", {
@@ -202,7 +201,7 @@ document.querySelector('.add-wrk-btn').addEventListener("click", function () {
 	});
 
 	wrk_expr_count++;
-
+	// TODO : Midify the ids of the elements 
 	var workExperienceContainer = document.querySelector('.repeat_this');
 	workExperienceContainer.insertAdjacentElement('beforebegin', clonedWorkExperience);
 });
