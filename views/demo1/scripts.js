@@ -1,4 +1,3 @@
-const hashMap = new Map();
 
 var form_1 = document.querySelector(".form_1");
 var form_2 = document.querySelector(".form_2");
@@ -38,174 +37,122 @@ var btn_add_work = document.querySelector(".add-wrk-btn");
 var modal_wrapper = document.querySelector(".modal_wrapper");
 var shadow = document.querySelector(".shadow");
 
-form_1_next_btn.addEventListener("click", async function () {
-	form_1.style.display = "none";
-	form_2.style.display = "block";
+function validateFormInputs(form) {
+	const formInputs = form.querySelectorAll('input[required], textarea[required]');
+	let hasError = false;
 
-	form_1_btns.style.display = "none";
-	form_2_btns.style.display = "flex";
-
-	// trigger the submit
-	const form = document.querySelector('.form_1 form');
-	form.submit();
-	// console.log(form);
-	// get data from form
-	// const formData = new FormData(form);
-
-	// // send data to server
-	// try {
-	// 	const response = await fetch("http://localhost:5700/registerTest", {
-	// 		method: "POST",
-	// 		// Set the FormData instance as the request body
-	// 		body: formData,
-	// 	});
-	// 	console.log(await response.json());
-	// } catch (e) {
-	// 	console.error(e);
-	// }
-
-	form_2_progessbar.classList.add("active");
-});
-
-form_2_back_btn.addEventListener("click", function () {
-	form_1.style.display = "block";
-	form_2.style.display = "none";
-
-	form_1_btns.style.display = "flex";
-	form_2_btns.style.display = "none";
-
-	form_2_progessbar.classList.remove("active");
-});
-
-form_2_next_btn.addEventListener("click", function () {
-	form_2.style.display = "none";
-	form_3.style.display = "block";
-
-	form_3_btns.style.display = "flex";
-	form_2_btns.style.display = "none";
-
-	// trigger the submit
-	const form = document.querySelector('.form_2 form');
-	form.submit();
-
-	form_3_progessbar.classList.add("active");
-});
-
-form_3_back_btn.addEventListener("click", function () {
-	form_2.style.display = "block";
-	form_3.style.display = "none";
-
-	form_3_btns.style.display = "none";
-	form_2_btns.style.display = "flex";
-
-	form_3_progessbar.classList.remove("active");
-});
-
-form_3_next_btn.addEventListener("click", function () {
-	form_3.style.display = "none";
-	form_4.style.display = "block";
-
-	form_3_btns.style.display = "none";
-	form_4_btns.style.display = "flex";
-
-	// trigger the submit
-	const form = document.querySelector('.form_3 form');
-	form.submit();
-
-	form_4_progessbar.classList.add("active");
-})
-
-form_4_back_btn.addEventListener("click", function () {
-	form_3.style.display = "block";
-	form_4.style.display = "none";
-
-	form_3_btns.style.display = "flex";
-	form_4_btns.style.display = "none";
-
-	form_4_progessbar.classList.remove("active");
-})
-
-form_4_next_btn.addEventListener("click", function () {
-	form_4.style.display = "none";
-	form_5.style.display = "block";
-
-	form_4_btns.style.display = "none";
-	form_5_btns.style.display = "flex";
-
-	// trigger the submit
-	const form = document.querySelector('.form_4 form');
-	form.submit();
-
-	form_5_progessbar.classList.add("active");
-})
-
-form_5_back_btn.addEventListener("click", function () {
-	form_4.style.display = "block";
-	form_5.style.display = "none";
-
-	form_4_btns.style.display = "flex";
-	form_5_btns.style.display = "none";
-
-	form_5_progessbar.classList.remove("active");
-})
-
-form_5_next_btn.addEventListener("click", function () {
-	form_5.style.display = "none";
-	form_6.style.display = "block";
-
-	form_5_btns.style.display = "none";
-	form_6_btns.style.display = "flex";
-
-	// trigger the submit
-	const form = document.querySelector('.form_5 form');
-	form.submit();
-
-	form_6_progessbar.classList.add("active");
-})
-
-form_6_back_btn.addEventListener("click", function () {
-	form_5.style.display = "block";
-	form_6.style.display = "none";
-
-	form_5_btns.style.display = "flex";
-	form_6_btns.style.display = "none";
-
-	form_6_progessbar.classList.remove("active");
-})
-
-btn_done.addEventListener("click", function () {
-
-	// trigger the submit
-	const form = document.querySelector('.form_6 form');
-	form.submit();
-
-	modal_wrapper.classList.add("active");
-})
-
-var wrk_expr_count = 1;
-
-document.querySelector('.add-wrk-btn').addEventListener("click", function () {
-	var originalWorkExperience = document.querySelector('.repeat_this');
-	var clonedWorkExperience = originalWorkExperience.cloneNode(true);
-	clonedWorkExperience.setAttribute('class', 'repeat_this' + wrk_expr_count);
-
-	// Update the id and name attributes of input and textarea elements
-	clonedWorkExperience.querySelectorAll('input, textarea').forEach(function (element) {
-		var originalId = element.getAttribute('id');
-		var originalName = element.getAttribute('name');
-		var updatedId = originalId + wrk_expr_count;
-		var updatedName = originalName + wrk_expr_count;
-
-		element.setAttribute('id', updatedId);
-		element.setAttribute('name', updatedName);
+	formInputs.forEach(input => {
+		if (!input.checkValidity()) {
+			input.reportValidity();
+			hasError = true;
+		}
 	});
 
-	wrk_expr_count++;
-	// TODO : Midify the ids of the elements 
-	var workExperienceContainer = document.querySelector('.repeat_this');
-	workExperienceContainer.insertAdjacentElement('beforebegin', clonedWorkExperience);
+	return hasError;
+}
+
+function switchFormSections(currentForm, nextForm, currentButtons, nextButtons, progressBar) {
+	currentForm.style.display = "none";
+	nextForm.style.display = "block";
+	currentButtons.style.display = "none";
+	nextButtons.style.display = "flex";
+	progressBar.classList.add("active");
+}
+
+function handleFormNavigation(currentForm, nextForm, currentButtons, nextButtons, progressBar) {
+	const form = currentForm.querySelector('form');
+	const hasError = validateFormInputs(form);
+
+	if (!hasError) {
+		switchFormSections(currentForm, nextForm, currentButtons, nextButtons, progressBar);
+
+		if (nextForm) {
+			form.submit();
+		}
+	}
+}
+
+form_1_next_btn.addEventListener("click", () => {
+	handleFormNavigation(form_1, form_2, form_1_btns, form_2_btns, form_2_progessbar);
 });
 
-shadow.addEventListener("click", function () {
-	modal_wrapper.classList.remove("active");
-})
+form_2_back_btn.addEventListener("click", () => {
+	switchFormSections(form_2, form_1, form_2_btns, form_1_btns, form_2_progessbar);
+});
+
+form_2_next_btn.addEventListener("click", () => {
+	handleFormNavigation(form_2, form_3, form_2_btns, form_3_btns, form_3_progessbar);
+});
+
+form_3_back_btn.addEventListener("click", () => {
+	switchFormSections(form_3, form_2, form_3_btns, form_2_btns, form_3_progessbar);
+});
+
+form_3_next_btn.addEventListener("click", () => {
+	handleFormNavigation(form_3, form_4, form_3_btns, form_4_btns, form_4_progessbar);
+});
+
+form_4_back_btn.addEventListener("click", () => {
+	switchFormSections(form_4, form_3, form_4_btns, form_3_btns, form_4_progessbar);
+});
+
+form_4_next_btn.addEventListener("click", () => {
+	handleFormNavigation(form_4, form_5, form_4_btns, form_5_btns, form_5_progessbar);
+});
+
+form_5_back_btn.addEventListener("click", () => {
+	switchFormSections(form_5, form_4, form_5_btns, form_4_btns, form_5_progessbar);
+});
+
+form_5_next_btn.addEventListener("click", () => {
+	handleFormNavigation(form_5, form_6, form_5_btns, form_6_btns, form_6_progessbar);
+});
+
+form_6_back_btn.addEventListener("click", () => {
+	switchFormSections(form_6, form_5, form_6_btns, form_5_btns, form_6_progessbar);
+});
+
+btn_done.addEventListener("click", () => {
+	const form = form_6.querySelector('form');
+	const hasError = validateFormInputs(form);
+
+	if (!hasError) {
+		form.submit();
+		modal_wrapper.classList.add("active");
+	}
+});
+
+let workExperienceCount = 1;
+
+document.querySelector('.add-wrk-btn').addEventListener("click", () => {
+	const originalWorkExperience = document.querySelector('.repeat_this_wrk');
+	const clonedWorkExperience = originalWorkExperience.cloneNode(true);
+	const updatedClass = 'repeat_this' + workExperienceCount;
+
+	clonedWorkExperience.setAttribute('class', updatedClass);
+	updateInputAndTextareaAttributes(clonedWorkExperience, workExperienceCount);
+
+	workExperienceCount++; 
+	originalWorkExperience.insertAdjacentElement('beforebegin', clonedWorkExperience);
+});
+
+let educationCount = 1;
+
+document.querySelector('.add-sch-btn').addEventListener("click", () => {
+	const originalEducationExperience = document.querySelector('.repeat_this_edu'); const clonedEducationExperience = originalEducationExperience.cloneNode(true); const updatedClass = 'repeat_this' + educationCount;
+
+	clonedEducationExperience.setAttribute('class', updatedClass); 
+	updateInputAndTextareaAttributes(clonedEducationExperience, educationCount);
+
+	educationCount++; 
+	originalEducationExperience.insertAdjacentElement('beforebegin', clonedEducationExperience);
+});
+
+function updateInputAndTextareaAttributes(element, count) {
+	element.querySelectorAll('input, textarea').forEach(el => {
+		const originalId = el.getAttribute('id'); const originalName = el.getAttribute('name'); const updatedId = originalId + count; const updatedName = originalName + count;
+		el.setAttribute('id', updatedId);
+		el.setAttribute('name', updatedName);
+
+	});
+}
