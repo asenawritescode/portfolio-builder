@@ -50,7 +50,7 @@ form_1_next_btn.addEventListener("click", async function () {
 	form.submit();
 	// console.log(form);
 	// get data from form
-	const formData = new FormData(form);
+	//const formData = new FormData(form);
 
 
 	// // send data to server
@@ -86,7 +86,7 @@ form_2_next_btn.addEventListener("click", function () {
 	form_2_btns.style.display = "none";
 
 	// trigger the submit
-	const form = document.querySelector('.form_2');
+	const form = document.querySelector('.form_2 form');
 	form.submit();
 
 	form_3_progessbar.classList.add("active");
@@ -110,7 +110,7 @@ form_3_next_btn.addEventListener("click", function () {
 	form_4_btns.style.display = "flex";
 
 	// trigger the submit
-	const form = document.querySelector('.form_3');
+	const form = document.querySelector('.form_3 form');
 	form.submit();
 
 	form_4_progessbar.classList.add("active");
@@ -134,7 +134,7 @@ form_4_next_btn.addEventListener("click", function () {
 	form_5_btns.style.display = "flex";
 
 	// trigger the submit
-	const form = document.querySelector('.form_4');
+	const form = document.querySelector('.form_4 form');
 	form.submit();
 
 	form_5_progessbar.classList.add("active");
@@ -158,7 +158,7 @@ form_5_next_btn.addEventListener("click", function () {
 	form_6_btns.style.display = "flex";
 
 	// trigger the submit
-	const form = document.querySelector('.form_5');
+	const form = document.querySelector('.form_5 form');
 	form.submit();
 
 	form_6_progessbar.classList.add("active");
@@ -177,7 +177,7 @@ form_6_back_btn.addEventListener("click", function () {
 btn_done.addEventListener("click", function () {
 
 	// trigger the submit
-	const form = document.querySelector('.form_6');
+	const form = document.querySelector('.form_6 form');
 	form.submit();
 
 	modal_wrapper.classList.add("active");
@@ -186,13 +186,11 @@ btn_done.addEventListener("click", function () {
 var wrk_expr_count = 1;
 
 document.querySelector('.add-wrk-btn').addEventListener("click", function () {
-	console.log("clicked");
 	var originalWorkExperience = document.querySelector('.repeat_this');
-	console.log(originalWorkExperience)
 	var clonedWorkExperience = originalWorkExperience.cloneNode(true);
 	clonedWorkExperience.setAttribute('class', 'repeat_this' + wrk_expr_count);
 	wrk_expr_count++;
-
+	// TODO : Midify the ids of the elements 
 	var workExperienceContainer = document.querySelector('.repeat_this');
 	workExperienceContainer.insertAdjacentElement('beforebegin', clonedWorkExperience);
 });
