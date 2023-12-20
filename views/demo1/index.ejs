@@ -330,7 +330,7 @@
 
             <div class="form_1 data_info">
                 <h2>Signup Info</h2>
-                <form action="/registerTest" method="post" onsubmit='return preventRedirect()'>
+                <form action="/registerTest" method="post" target="hiddenFrame">
                     <div class="form_container">
                         <div class="input_wrap">
                             <label for="email">First Name</label>
@@ -354,7 +354,7 @@
 
             <div class="form_2 data_info" style="display: none;">
                 <h2>Personal Info</h2>
-                <form  onsubmit='return false' action="/register" method="post">
+                <form onsubmit='return false' action="/register" method="post">
                     <div class="form_container">
                         <div class="input_wrap">
                             <label for="email">Email</label>
@@ -525,11 +525,11 @@
     <script type="text/javascript" src="scripts.js"></script>
     <script>
         // prevent redirct 
-        function preventRedirect( ) {
+        function preventRedirect() {
             return false;
         }
     </script>
-
+    <iframe name="hiddenFrame" width="0" height="0" border="0" style="display: none;"></iframe>
 </body>
 
 </html>
