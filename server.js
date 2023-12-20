@@ -8,7 +8,8 @@ const
     // ejs = require("ejs"),
     port = process.env.PORT || 5700,
     User = require("./models/user.model"),
-    Template = require("./models/template.model")
+    Template = require("./models/template.model"),
+    session = require("express-session")
     ;
 
 
@@ -19,6 +20,14 @@ app
     // configs
     .use(express.json())
     .use(express.urlencoded())
+    .use(
+        session({
+            secret: 'asenawritescode',
+            cookie: { maxAge: 120000 },
+            saveUninitialized: true,
+        })
+    )
+    // security TODO: It is casuing a bug with loasding from cdn
     // .use(
     //     helmet.contentSecurityPolicy({
     //         directives: {
@@ -27,7 +36,7 @@ app
     //     })
     // )
 
-    // make files accesible
+    // make files accesible 
     .use(express.static(path.join(`${__dirname}/views/demo1`)))
     .use(express.static(path.join(__dirname, 'node_modules')))
     .use(express.static(path.join(__dirname, 'public')))
@@ -52,7 +61,7 @@ app
     })
 
     //  user-profile
-    .get('/user/:userId', function (req, res) {
+    .get('/profile/:userId', function (req, res) {
         const userId = req.params.userId;
         // Use the userId to load the specific user page
         if (!userId) {
@@ -77,8 +86,7 @@ app
     })
 
     // register
-    .post('/register', function (req, res) {
-
+    .post('/register/form/:id', function (req, res) {
         // get the data from the fom 
         const {
             firstName,
@@ -118,6 +126,11 @@ app
             return res.status(500).send(`Error : ${err}`);
         }
         return res.send()
+    })
+
+    .post('/registerTest', function (req, res) {
+        console.log(req.body)
+        return res.sendStatus(200)
     })
 
     // update the user data
@@ -194,6 +207,7 @@ app
             console.log(`lorem ipsum`)
         }
     })
+
     .get('/:fileName/:id.html', function (req, res, next) {
         // send back file with id , get data and loop and pass it through to the ejs file and loop , data to be fetched from db
         /**
