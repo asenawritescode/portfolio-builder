@@ -354,7 +354,7 @@
 
             <div class="form_2 data_info" style="display: none;">
                 <h2>Personal Info</h2>
-                <form onsubmit='return false' action="/register" method="post">
+                <form target="hiddenFrame" false' action="/registerTest" method="post">
                     <div class="form_container">
                         <div class="input_wrap">
                             <label for="email">Email</label>
@@ -381,7 +381,7 @@
 
             <div class="form_3 data_info" style="display: none;">
                 <h2>Professional Info</h2>
-                <form action="/register" method="post">
+                <form target="hiddenFrame" action="/registerTest" method="post">
                     <div class="form_container">
                         <div class="input_wrap">
                             <label for="company">Bio</label>
@@ -393,7 +393,7 @@
 
             <div class="form_4 data_info" style="display: none;">
                 <h2>Personal Info</h2>
-                <form>
+                <form action="/registerTest" method="post" target="hiddenFrame">
                     <div class="form_container">
                         <div class="input_wrap">
                             <div class="work_experience scrollable">
@@ -429,7 +429,7 @@
 
             <div class="form_5 data_info" style="display: none;">
                 <h2>Personal Info</h2>
-                <form action="/register" method="post">
+                <form action="/registerTest" method="post" target="hiddenFrame">
                     <div class="form_container">
                         <div class="input_wrap">
                             <div class="work_experience scrollable">
@@ -465,7 +465,7 @@
 
             <div class="form_6 data_info" style="display: none;">
                 <h2>Personal Info</h2>
-                <form action="/register" method="post">
+                <form action="/registerTest" method="post" target="hiddenFrame">
                     <div class="form_container">
                         <div class="input_wrap">
                             <label for="last_name">Skills</label>
@@ -523,12 +523,6 @@
     </div>
 
     <script type="text/javascript" src="scripts.js"></script>
-    <script>
-        // prevent redirct 
-        function preventRedirect() {
-            return false;
-        }
-    </script>
     <iframe name="hiddenFrame" width="0" height="0" border="0" style="display: none;"></iframe>
 </body>
 
