@@ -191,7 +191,8 @@
             background: var(--back-btn-hover);
         }
 
-        .add-wrk-btn, .add-sch-btn {
+        .add-wrk-btn,
+        .add-sch-btn {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -207,11 +208,13 @@
             border: none;
         }
 
-        .add-wrk-btn:hover, .add-sch-btn:hover {
+        .add-wrk-btn:hover,
+        .add-sch-btn:hover {
             background: var(--next-btn-hover);
         }
 
-        .add-wrk-btn span, .add-sch-btn span {
+        .add-wrk-btn span,
+        .add-sch-btn span {
             margin-right: 5px;
             /* Adjusted margin */
         }
@@ -324,13 +327,14 @@
             </ul>
         </div>
         <div class="form_wrap">
+
             <div class="form_1 data_info">
                 <h2>Signup Info</h2>
-                <form action="/register" method="post">
+                <form action="/registerTest" method="post" onsubmit='return preventRedirect()'>
                     <div class="form_container">
                         <div class="input_wrap">
                             <label for="email">First Name</label>
-                            <input type="text" name="Email Address" class="input" id="email">
+                            <input type="email" name="email" class="input" id="email">
                         </div>
                         <div class="input_wrap">
                             <label for="password">Middle Name</label>
@@ -347,33 +351,34 @@
                     </div>
                 </form>
             </div>
+
             <div class="form_2 data_info" style="display: none;">
                 <h2>Personal Info</h2>
-                <form action="/register" method="post">
+                <form  onsubmit='return false' action="/register" method="post">
                     <div class="form_container">
                         <div class="input_wrap">
                             <label for="email">Email</label>
                             <input type="text" name="Email Address" class="input" id="email">
-                        </div>
-                        <div class="input_wrap">
+
                             <label for="user_name">Phone</label>
                             <input type="text" name="User Name" class="input" id="user_name">
-                        </div>
-                        <div class="input_wrap">
+
                             <label for="first_name">Address</label>
                             <input type="text" name="First Name" class="input" id="first_name">
-                        </div>
-                        <div class="input_wrap">
+
                             <label for="last_name">Twitter Link </label>
                             <input type="text" name="Last Name" class="input" id="last_name">
+
                             <label for="last_name">Linkedin Link </label>
                             <input type="text" name="Last Name" class="input" id="last_name">
+
                             <label for="last_name">Github Link </label>
                             <input type="text" name="Last Name" class="input" id="last_name">
                         </div>
                     </div>
                 </form>
             </div>
+
             <div class="form_3 data_info" style="display: none;">
                 <h2>Professional Info</h2>
                 <form action="/register" method="post">
@@ -385,6 +390,7 @@
                     </div>
                 </form>
             </div>
+
             <div class="form_4 data_info" style="display: none;">
                 <h2>Personal Info</h2>
                 <form>
@@ -420,6 +426,7 @@
                     </div>
                 </form>
             </div>
+
             <div class="form_5 data_info" style="display: none;">
                 <h2>Personal Info</h2>
                 <form action="/register" method="post">
@@ -455,6 +462,7 @@
                     </div>
                 </form>
             </div>
+
             <div class="form_6 data_info" style="display: none;">
                 <h2>Personal Info</h2>
                 <form action="/register" method="post">
@@ -466,10 +474,12 @@
                     </div>
                 </form>
             </div>
+
         </div>
+
         <div class="btns_wrap">
             <div class="common_btns form_1_btns">
-                <button type="button" class="btn_next">Next <span class="icon"><ion-icon
+                <button type="submit" class="btn_next">Next <span class="icon"><ion-icon
                             name="arrow-forward-sharp"></ion-icon></span></button>
             </div>
             <div class="common_btns form_2_btns" style="display: none;">
@@ -513,6 +523,12 @@
     </div>
 
     <script type="text/javascript" src="scripts.js"></script>
+    <script>
+        // prevent redirct 
+        function preventRedirect( ) {
+            return false;
+        }
+    </script>
 
 </body>
 
