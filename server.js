@@ -5,16 +5,20 @@ const
     app = express(),
     path = require("path"),
     helmet = require("helmet"),
+    session = require("express-session"),
+    cache = require("node-cache"),
     // ejs = require("ejs"),
     port = process.env.PORT || 5700,
     User = require("./models/user.model"),
     Template = require("./models/template.model"),
-    session = require("express-session")
+    getGrpedData = require("./functions/groupCollectiveData")
     ;
 
 
 // connect to the database
 require("./functions/connectDb")
+
+const myCache = new cache();
 
 app
     // configs
@@ -23,7 +27,7 @@ app
     .use(
         session({
             secret: 'asenawritescode',
-            cookie: { maxAge: 120000 },
+            cookie: { maxAge: 60 * 60 * 1000 }, // 10 minutes
             saveUninitialized: true,
         })
     )
@@ -88,6 +92,188 @@ app
     // register
     .post('/register/form/:id', function (req, res) {
         // get the data from the fom 
+        // const {
+        //     firstName,
+        //     middleName,
+        //     lastName,
+        //     userName,
+        //     email,
+        //     phone,
+        //     address,
+        //     socialLinks,
+        //     bio,
+        //     workExperience,
+        //     education,
+        //     skills,
+        //     templateId
+        // } = req.body;
+
+        // check the id passes in the url
+        const id = req.params.id;
+        const userId = req.session.id;
+
+        // switch case between 1 and 6
+        switch (id) {
+            case '1':
+                const {
+                    firstName,
+                    middleName,
+                    lastName,
+                    userName
+                } = req.body
+
+                // validate the data
+                if (!firstName || !lastName || !userName) {
+                    return res.status(400).send('All fields are required');
+                }
+
+                // saniatise the data for security
+
+                //  push the data to node-cache
+                myCache.set(userId, {
+                    firstName,
+                    middleName,
+                    lastName,
+                    userName
+                },
+                    40 * 60
+                )
+                res.sendStatus(200);
+                break;
+
+            case '2':
+                const {
+                    email,
+                    phone,
+                    address,
+                    socialLinks
+                } = req.body
+
+                // validate the data
+                if (!email || !phone || !address || !socialLinks) {
+                    return res.status(400).send('All fields are required');
+                }
+
+                // saniatise the data for security
+
+                //  push the data to node-cache
+                myCache.set(userId, {
+                    email,
+                    phone,
+                    address,
+                    socialLinks
+                },
+                    35 * 60
+                )
+                res.sendStatus(200);
+                break;
+
+            case '3':
+                const {
+                    bio
+                } = req.body
+
+                // validate the data
+                if (!bio) {
+                    return res.status(400).send('All fields are required');
+                }
+
+                // saniatise the data for security
+
+                //  push the data to node-cache
+                myCache.set(userId, {
+                    bio
+                },
+                    30 * 60
+                )
+
+                res.sendStatus(200);
+                break;
+
+            case '4':
+
+                var workExperience = getGrpedData(req.body);
+
+                // validate the data
+                if (!workExperience) {
+                    return res.status(400).send('All fields are required');
+                }
+
+                // saniatise the data for security
+                var wrkData = getGrpedData(workExperience);
+
+                //  push the data to node-cache
+                myCache.set(userId, {
+                    workExperience: wrkData
+                },
+                    25 * 60
+                )
+
+                res.sendStatus(200);
+                break;
+            case '5':
+
+                var education = getGrpedData(req.body);
+
+                // validate the data
+                if (!education) {
+                    return res.status(400).send('All fields are required');
+                }
+
+                // saniatise the data for security
+                var eduData = getGrpedData(education);
+
+                //  push the data to node-cache
+                myCache.set(userId, {
+                    education: eduData
+                },
+                    20 * 60
+                )
+
+                res.sendStatus(200);
+                break;
+            case '6':
+                const {
+                    skills
+                } = req.body
+
+                // validate the data
+                if (!skills) {
+                    return res.status(400).send('All fields are required');
+                }
+
+                // saniatise the data for security
+
+                // get the data from the cache
+                const userData = myCache.get(userId);
+                console.log('userData : ', userData);
+
+                // add the skills to the userdata
+                userData.skills = skills;
+
+                var test = { userData };
+                console.log(test);
+                // create a new user
+                // try {
+                //     User.create({
+                //         ...userData
+                //     })
+                // } catch (err) {
+                //     console.log(err);
+                //     return res.status(500).send(`Error : ${err}`);
+                // }
+
+                res.sendStatus(200);
+                break;
+            default:
+                res.sendStatus(400);
+                break;
+        }
+    })
+
+    .post('/registerTest', function (req, res) {
+
+        // get the data from the form
         const {
             firstName,
             middleName,
@@ -104,32 +290,9 @@ app
             templateId
         } = req.body;
 
-        // create a new user
-        try {
-            User.create({
-                firstName,
-                middleName,
-                lastName,
-                userName,
-                email,
-                phone,
-                address,
-                socialLinks,
-                bio,
-                workExperience,
-                education,
-                skills,
-                templateId
-            })
-        } catch (err) {
-            console.log(err);
-            return res.status(500).send(`Error : ${err}`);
-        }
-        return res.send()
-    })
-
-    .post('/registerTest', function (req, res) {
         console.log(req.body)
+        console.log(req.session.id)
+        console.log(req.session)
         return res.sendStatus(200)
     })
 
