@@ -1,4 +1,5 @@
 const { default: mongoose } = require("mongoose");
+const map = new Map();
 
 const
     express = require("express"),
@@ -6,7 +7,7 @@ const
     path = require("path"),
     helmet = require("helmet"),
     session = require("express-session"),
-    cache = require("node-cache"),
+    // cache = require("node-cache"),
     // ejs = require("ejs"),
     port = process.env.PORT || 5700,
     User = require("./models/user.model"),
@@ -18,7 +19,7 @@ const
 // connect to the database
 require("./functions/connectDb")
 
-const myCache = new cache();
+// const myCache = new cache();
 
 app
     // configs
@@ -49,7 +50,6 @@ app
     .set('view engine', 'ejs')
     .set('views', `${__dirname}/views/`)
 
-
     // mids
     .get('/', function (req, res) {
         // load all templates avaulable in db and render them
@@ -58,8 +58,6 @@ app
         if (!templates) {
             return res.status(404).send('User not found');
         }
-
-
 
         return res.render('demo1/demo', { data: templates });
     })
@@ -122,6 +120,7 @@ app
                     userName
                 } = req.body
 
+                console.log(userId);
                 // validate the data
                 if (!firstName || !lastName || !userName) {
                     return res.status(400).send('All fields are required');
@@ -130,14 +129,13 @@ app
                 // saniatise the data for security
 
                 //  push the data to node-cache
-                myCache.set(userId, {
-                    firstName,
-                    middleName,
-                    lastName,
-                    userName
-                },
-                    40 * 60
-                )
+                map.set(userId, {
+                    firstName: firstName,
+                    middleName: middleName,
+                    lastName: lastName,
+                    userName: userName
+                })
+
                 res.sendStatus(200);
                 break;
 
@@ -149,6 +147,7 @@ app
                     socialLinks
                 } = req.body
 
+                console.log(userId);
                 // validate the data
                 if (!email || !phone || !address || !socialLinks) {
                     return res.status(400).send('All fields are required');
@@ -157,14 +156,19 @@ app
                 // saniatise the data for security
 
                 //  push the data to node-cache
-                myCache.set(userId, {
-                    email,
-                    phone,
-                    address,
-                    socialLinks
-                },
-                    35 * 60
-                )
+                var oldData = map.get(userId);
+
+                links = socialLinks.map(link => ({
+                    link,
+                    platform: link.split('://')[0]
+                }))
+
+                oldData.socialLinks = links
+                oldData.email = email
+                oldData.phone = phone
+                oldData.address = address
+
+                map.set(userId, oldData)
                 res.sendStatus(200);
                 break;
 
@@ -172,6 +176,8 @@ app
                 const {
                     bio
                 } = req.body
+
+                console.log(userId);
 
                 // validate the data
                 if (!bio) {
@@ -181,18 +187,18 @@ app
                 // saniatise the data for security
 
                 //  push the data to node-cache
-                myCache.set(userId, {
-                    bio
-                },
-                    30 * 60
-                )
+                var oldData = map.get(userId);
+                oldData.bio = bio
 
+                map.set(userId, oldData)
                 res.sendStatus(200);
                 break;
 
             case '4':
 
                 var workExperience = getGrpedData(req.body);
+
+                console.log(userId);
 
                 // validate the data
                 if (!workExperience) {
@@ -203,17 +209,19 @@ app
                 var wrkData = getGrpedData(workExperience);
 
                 //  push the data to node-cache
-                myCache.set(userId, {
-                    workExperience: wrkData
-                },
-                    25 * 60
-                )
+                var oldData = map.get(userId);
+
+                oldData.workExperience = wrkData;
+
+                map.set(userId, oldData)
 
                 res.sendStatus(200);
                 break;
             case '5':
 
                 var education = getGrpedData(req.body);
+
+                console.log(userId);
 
                 // validate the data
                 if (!education) {
@@ -224,11 +232,11 @@ app
                 var eduData = getGrpedData(education);
 
                 //  push the data to node-cache
-                myCache.set(userId, {
-                    education: eduData
-                },
-                    20 * 60
-                )
+                var oldData = map.get(userId);
+
+                oldData.education = eduData;
+
+                map.set(userId, oldData)
 
                 res.sendStatus(200);
                 break;
@@ -245,23 +253,22 @@ app
                 // saniatise the data for security
 
                 // get the data from the cache
-                const userData = myCache.get(userId);
-                console.log('userData : ', userData);
+                const userData = map.get(userId);
 
                 // add the skills to the userdata
                 userData.skills = skills;
 
-                var test = { userData };
-                console.log(test);
                 // create a new user
-                // try {
-                //     User.create({
-                //         ...userData
-                //     })
-                // } catch (err) {
-                //     console.log(err);
-                //     return res.status(500).send(`Error : ${err}`);
-                // }
+                try {
+                    User.create({
+                        ...userData
+                    })
+                } catch (err) {
+                    console.log(err);
+                    return res.status(500).send(`Error : ${err}`);
+                }
+
+                console.log(userData);
 
                 res.sendStatus(200);
                 break;

@@ -1,19 +1,20 @@
-module.exports = function groupObjectByDigit(obj) {
-    const groupedMap = {};
-  
-    for (const key in obj) {
-      const digit = key.match(/\d+$/)?.[0]; // Extract the digit at the end of the key
-      const pureKey = key.replace(/\d+$/, ''); // Remove the number from the key
-  
-      if (digit in groupedMap) {
-        groupedMap[digit][pureKey] = obj[key];
-      } else {
-        groupedMap[digit] = { [pureKey]: obj[key] };
-      }
+module.exports = function getGrpedData(obj) {
+  const groupedMap = {};
+
+  for (const key in obj) {
+    const digit = key.match(/\d+$/)?.[0]; // Extract the digit at the end of the key
+    const pureKey = key.replace(/\d+$/, ''); // Remove the number from the key
+
+    if (digit in groupedMap) {
+      groupedMap[digit][pureKey] = obj[key];
+    } else {
+      groupedMap[digit] = { [pureKey]: obj[key] };
     }
-  
-    return Object.values(groupedMap);
   }
+
+  return Object.values(groupedMap);
+}
+
 
 
 //   Sample input
