@@ -78,10 +78,31 @@ app
             if (!userData) {
                 return res.status(404).send('User not found');
             }
-            console.log(userData);
 
-            return await res.render(`plain/index`, { user: userData });
+            return res.render(`plain/index`, { user: userData });
+        } catch (error) {
+            console.error(error)
+            return res.send(404)
+        }
+    })
 
+    .post('/profile/:userId', async function (req, res) {
+        const userId = req.params.userId;
+        // Use the userId to load the specific user page
+        if (!userId) {
+            return res.status(404).send('User not found');
+        }
+
+        // get data from db 
+        // TODO : cache support ???
+        try {
+            let userData = await User.findById(userId).exec();
+            // const userData = await User.findById(userId);
+            if (!userData) {
+                return res.status(404).send('User not found');
+            }
+
+            return res.render(`plain/index`, { user: userData });
         } catch (error) {
             console.error(error)
             return res.send(404)
@@ -126,7 +147,6 @@ app
                     userName
                 } = req.body
 
-                console.log(userId);
                 // validate the data
                 if (!firstName || !lastName || !userName) {
                     return res.status(400).send('All fields are required');
@@ -153,7 +173,6 @@ app
                     socialLinks
                 } = req.body
 
-                console.log(userId);
                 // validate the data
                 if (!email || !phone || !address || !socialLinks) {
                     return res.status(400).send('All fields are required');
@@ -182,8 +201,6 @@ app
                     bio
                 } = req.body
 
-                console.log(userId);
-
                 // validate the data
                 if (!bio) {
                     return res.status(400).send('All fields are required');
@@ -202,15 +219,12 @@ app
 
                 var workExperience = getGrpedData(req.body);
 
-                console.log(userId);
-
                 // validate the data
                 if (!workExperience) {
                     return res.status(400).send('All fields are required');
                 }
 
                 // saniatise the data for security
-                console.log(workExperience);
                 //  push the data to node-cache
                 var oldData = map.get(userId);
 
@@ -223,8 +237,6 @@ app
             case '5':
 
                 var education = getGrpedData(req.body);
-
-                console.log(userId);
 
                 // validate the data
                 if (!education) {
@@ -250,7 +262,6 @@ app
                 if (!skills) {
                     return res.status(400).send('All fields are required');
                 }
-
                 // saniatise the data for security
 
                 // get the data from the cache
@@ -260,11 +271,12 @@ app
                 userData.skills = skills;
                 // create a new user
                 try {
-                    User.create({
+                    var createUser = User.create({
                         ...userData
                     })
+                    console.log(`-------------created user:\n${createUser}`);
                 } catch (err) {
-                    console.log(err);
+                    console.log(`-------------error creating user:\n${err}`);
                     return res.status(500).send(`Error : ${err}`);
                 }
 
