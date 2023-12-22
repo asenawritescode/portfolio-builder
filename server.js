@@ -72,15 +72,20 @@ app
 
         // get data from db 
         // TODO : cache support ???
-        let userData = await User.findById(userId).exec();
+        try {
+            let userData = await User.findById(userId).exec();
+            // const userData = await User.findById(userId);
+            if (!userData) {
+                return res.status(404).send('User not found');
+            }
+            console.log(userData);
 
-        // const userData = await User.findById(userId);
-        if (!userData) {
-            return res.status(404).send('User not found');
+            return await res.render(`plain/index`, { user: userData });
+
+        } catch (error) {
+            console.error(error)
+            return res.send(404)
         }
-        console.log(userData);
-
-        return res.render(`plain/index`, { user: userData });
     })
 
     // form
@@ -229,7 +234,7 @@ app
                 // saniatise the data for security
                 //  push the data to node-cache
                 var oldData = map.get(userId);
-            
+
                 oldData.education = education
 
                 map.set(userId, oldData)
@@ -264,15 +269,14 @@ app
                 }
 
                 // generate a url for the user
-                const systemUserNames =await User.findOne({
+                const systemUserNames = await User.findOne({
                     userName: userData.userName
                 }).exec();
 
                 if (systemUserNames) {
-                    return res.status(400).redirect(`/profile/${systemUserNames._id}`);
+                    console.log(systemUserNames);
+                    return res.redirect(307, `/profile/${systemUserNames._id}`);
                 }
-
-                res.sendStatus(200);
                 break;
             default:
                 res.sendStatus(400);
