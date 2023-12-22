@@ -63,7 +63,7 @@ app
     })
 
     //  user-profile
-    .get('/profile/:userId', function (req, res) {
+    .get('/profile/:userId', async function (req, res) {
         const userId = req.params.userId;
         // Use the userId to load the specific user page
         if (!userId) {
@@ -72,14 +72,15 @@ app
 
         // get data from db 
         // TODO : cache support ???
-        let userData = User.findById(userId);
+        let userData = await User.findById(userId).exec();
 
         // const userData = await User.findById(userId);
         if (!userData) {
             return res.status(404).send('User not found');
         }
+        console.log(userData);
 
-        return res.render(`${userData.templateId}/user`, { data: userData });
+        return res.render(`plain/index`, { user: userData });
     })
 
     // form
@@ -171,7 +172,6 @@ app
                 map.set(userId, oldData)
                 res.sendStatus(200);
                 break;
-
             case '3':
                 const {
                     bio
@@ -193,7 +193,6 @@ app
                 map.set(userId, oldData)
                 res.sendStatus(200);
                 break;
-
             case '4':
 
                 var workExperience = getGrpedData(req.body);
@@ -206,12 +205,11 @@ app
                 }
 
                 // saniatise the data for security
-                var wrkData = getGrpedData(workExperience);
-
+                console.log(workExperience);
                 //  push the data to node-cache
                 var oldData = map.get(userId);
 
-                oldData.workExperience = wrkData;
+                oldData.workExperience = workExperience
 
                 map.set(userId, oldData)
 
@@ -229,12 +227,10 @@ app
                 }
 
                 // saniatise the data for security
-                var eduData = getGrpedData(education);
-
                 //  push the data to node-cache
                 var oldData = map.get(userId);
-
-                oldData.education = eduData;
+            
+                oldData.education = education
 
                 map.set(userId, oldData)
 
@@ -257,7 +253,6 @@ app
 
                 // add the skills to the userdata
                 userData.skills = skills;
-
                 // create a new user
                 try {
                     User.create({
@@ -268,7 +263,15 @@ app
                     return res.status(500).send(`Error : ${err}`);
                 }
 
-                console.log(userData);
+                // generate a url for the user
+                const systemUserNames = User.findOne({
+                    userName: userData.userName
+                })
+
+                if (systemUserNames) {
+                    return res.status(400).redirect(`/profile/${systemUserNames._id}`);
+                }
+
 
                 res.sendStatus(200);
                 break;

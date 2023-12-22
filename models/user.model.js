@@ -105,6 +105,10 @@ const userSchema = new mongoose.Schema({
     skills: {
         type: String
     },
+    url: {
+        type: String,
+        default: ''
+    },
     templateId: {
         type: String
     },
