@@ -89,7 +89,7 @@ app
     })
 
     // register
-    .post('/register/form/:id', function (req, res) {
+    .post('/register/form/:id', async function (req, res) {
         // get the data from the fom 
         // const {
         //     firstName,
@@ -264,14 +264,13 @@ app
                 }
 
                 // generate a url for the user
-                const systemUserNames = User.findOne({
+                const systemUserNames =await User.findOne({
                     userName: userData.userName
-                })
+                }).exec();
 
                 if (systemUserNames) {
                     return res.status(400).redirect(`/profile/${systemUserNames._id}`);
                 }
-
 
                 res.sendStatus(200);
                 break;
