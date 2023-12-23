@@ -1,5 +1,11 @@
 const { default: mongoose } = require("mongoose");
+
+/*
+    Temporarily store user data from form
+    Map<userId, userData>
+*/
 const map = new Map();
+
 
 const
     express = require("express"),
@@ -41,16 +47,20 @@ app
     //     })
     // )
 
-    // make files accesible 
+    // make files accesible (Specify the static files)
     .use(express.static(path.join(`${__dirname}/views/demo1`)))
     .use(express.static(path.join(__dirname, 'node_modules')))
     .use(express.static(path.join(__dirname, 'public')))
 
-    // view engine
+    // specify the view engine and the directory path
     .set('view engine', 'ejs')
     .set('views', `${__dirname}/views/`)
 
-    // mids
+    /*
+        Landing
+        GET /
+        - Landing page for the whole project 
+    */
     .get('/', function (req, res) {
         // load all templates avaulable in db and render them
         const templates = Template.find();
@@ -62,7 +72,11 @@ app
         return res.render('demo1/demo', { data: templates });
     })
 
-    //  user-profile
+    /*
+        Profile
+        GET /profile/:userId
+        - Render the user profile. 
+    */
     .get('/profile/:userId', async function (req, res) {
         const userId = req.params.userId;
         // Use the userId to load the specific user page
@@ -86,6 +100,11 @@ app
         }
     })
 
+    /*
+        Profile
+        POST /profile/:userId
+        - Workaround for a bug with the form, to render user profile. Cause is res.redirect(). 
+    */
     .post('/profile/:userId', async function (req, res) {
         const userId = req.params.userId;
         // Use the userId to load the specific user page
@@ -109,12 +128,20 @@ app
         }
     })
 
-    // form
+    /*
+        Register
+        GET /register
+        - Render the user generation form.
+    */
     .get('/register', function (req, res) {
         return res.render('demo1/index', { data: null })
     })
 
-    // register
+    /*
+        Register
+        POST /register/form/:id
+        - Recieve data from each form as they are passed in. 
+    */
     .post('/register/form/:id', async function (req, res) {
         // get the data from the fom 
         // const {
@@ -296,31 +323,6 @@ app
         }
     })
 
-    .post('/registerTest', function (req, res) {
-
-        // get the data from the form
-        const {
-            firstName,
-            middleName,
-            lastName,
-            userName,
-            email,
-            phone,
-            address,
-            socialLinks,
-            bio,
-            workExperience,
-            education,
-            skills,
-            templateId
-        } = req.body;
-
-        console.log(req.body)
-        console.log(req.session.id)
-        console.log(req.session)
-        return res.sendStatus(200)
-    })
-
     // update the user data
     .patch('/register', function (req, res) {
 
@@ -360,6 +362,11 @@ app
         }
     })
 
+    /*
+        General
+        GET /:fileName.html
+        - Router like endpoint for serving html files from the system. 
+    */
     .get('/:fileName.html', function (req, res, next) {
         /**
          * THE /:id.html is going to capture all the redirects from the ejs 
@@ -396,6 +403,11 @@ app
         }
     })
 
+    /*
+        General
+        GET /:fileName.html
+        - Router like endpoint for serving nested html files from the system. 
+    */
     .get('/:fileName/:id.html', function (req, res, next) {
         // send back file with id , get data and loop and pass it through to the ejs file and loop , data to be fetched from db
         /**
@@ -427,13 +439,17 @@ app
         }
     })
 
-    // 404 error
+    /*
+        General Middleware
+        - For error handling; incase a route has not been found, this middleware will be triggered. 
+    */
     .use(function (req, res) {
         return res.status(404)
             .send(`<h1>404 error</h1>`)
     })
 
 
+// Pass the app and port data to index.js
 module.exports = {
     app,
     port
