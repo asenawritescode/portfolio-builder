@@ -103,7 +103,7 @@ const userSchema = new mongoose.Schema({
         type: [educationSchema]
     },
     skills: {
-        type: [String]
+        type: String
     },
     url: {
         type: String,

@@ -16,7 +16,7 @@ const
     // cache = require("node-cache"),
     // ejs = require("ejs"),
     port = process.env.PORT || 5700,
-    User = require("./models/user.model"),
+    User = require("./models/user.model.js"),
     Template = require("./models/template.model"),
     getGrpedData = require("./functions/groupCollectiveData")
     ;

@@ -1,6 +1,6 @@
 const
 mongoose =  require("mongoose"),
-mongo_link = 'mongodb://localhost:27017/porfolio' // BUG : Not loading env file !!!
+mongo_link = 'mongodb://localhost:27017/porfolio' // BUG !!!
 ;
 
 mongoose.connect(mongo_link)
